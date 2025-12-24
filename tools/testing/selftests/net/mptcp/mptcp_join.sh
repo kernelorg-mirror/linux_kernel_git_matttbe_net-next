@@ -4124,6 +4124,7 @@ userspace_tests()
 			userspace_pm_add_sf $ns2 10.0.1.2 0
 			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
 			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
+			# TODO: check error
 		fi
 		kill_events_pids
 		mptcp_lib_kill_group_wait $tests_pid

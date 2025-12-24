@@ -606,6 +606,7 @@ struct mptcp_subflow_context {
 	u8	stale_count;
 
 	u32	subflow_id;
+	int	error;
 
 	long	delegated_status;
 	unsigned long	fail_tout;

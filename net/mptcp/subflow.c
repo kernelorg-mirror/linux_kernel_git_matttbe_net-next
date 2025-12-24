@@ -1286,7 +1286,7 @@ static bool subflow_is_done(const struct sock *sk)
 /* sched mptcp worker for subflow cleanup if no more data is pending */
 static void subflow_sched_work_if_closed(struct mptcp_sock *msk, struct sock *ssk)
 {
-	const struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
 	struct sock *sk = (struct sock *)msk;
 
 	if (likely(ssk->sk_state != TCP_CLOSE &&
@@ -1297,6 +1297,7 @@ static void subflow_sched_work_if_closed(struct mptcp_sock *msk, struct sock *ss
 	if (!skb_queue_empty(&ssk->sk_receive_queue))
 		return;
 
+	subflow->error = READ_ONCE(ssk->sk_err);
 	if (!test_and_set_bit(MPTCP_WORK_CLOSE_SUBFLOW, &msk->flags))
 		mptcp_schedule_work(sk);
 

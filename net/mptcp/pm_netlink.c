@@ -368,6 +368,8 @@ static int mptcp_event_put_token_and_ssk(struct sk_buff *skb,
 		return -EMSGSIZE;
 
 	sk_err = READ_ONCE(ssk->sk_err);
+	if (!sk_err && sf->error)
+		sk_err = sf->error;
 	if (sk_err && sk->sk_state == TCP_ESTABLISHED &&
 	    nla_put_u8(skb, MPTCP_ATTR_ERROR, sk_err))
 		return -EMSGSIZE;
